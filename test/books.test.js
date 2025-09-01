@@ -2,9 +2,11 @@ import request from 'supertest';
 import { app, server } from '../app.js';
 import db_connection from '../database/db_connection.js';
 describe('test book crud', () => {
-    beforeAll(async () => { // Abrimos conexión
+    let createdBookId;
+    beforeAll(async () => { 
         await db_connection.authenticate()
     })
+    // GET all books
     describe('GET /books', () => {
         let response;
         beforeEach(async () => {
@@ -19,6 +21,51 @@ describe('test book crud', () => {
             expect(response.body).toBeInstanceOf(Array);
         })
     })
+
+    // POST (create)
+    describe('POST /books', () => {
+        test('should create a new book', async () => {
+            const newBook = {
+                title: 'Test Book',
+                writer: 'Test Author',
+                book_description: 'This is a test description'
+            };
+            const response = await request(app).post('/books').send(newBook);
+            expect(response.status).toBe(201);
+            expect(response.body).toHaveProperty('id');
+            createdBookId = response.body.id;
+        })
+    })
+
+    // GET one book by id
+    describe('GET /books/:id', () => {
+        test('should return the new book by id', async () => {
+            const response = await request(app).get(`/books/${createdBookId}`).send();
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveProperty('id', createdBookId);
+        });
+    });
+
+    // PUT (update) book by id
+    describe('PUT /books/:id', () => {
+        test('should update the new book', async () => {
+            const updatedData = { title: 'Updated Title' };
+            const response = await request(app).put(`/books/${createdBookId}`).send(updatedData);
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveProperty('title', 'Updated Title');
+        });
+    });
+
+    // DELETE book by id
+
+    describe('DELETE /books/:id', () => {
+        test('should delete a book', async () => {
+            const response = await request(app).delete(`/books/${createdBookId}`).send();
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveProperty('message');
+        });
+    });
+
     afterAll(async () => { // Cerramos conexión
         await db_connection.close()
         server.close()
