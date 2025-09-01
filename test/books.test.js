@@ -12,19 +12,19 @@ describe('test book crud', () => {
         beforeEach(async () => {
             response = await request(app).get('/books').send()
         })
-        test('should return a response with status 200 and type json', async () => {
+        test('Should return a response with status 200 and type json', async () => {
             // const response = await request(app).get('/books').send()
             expect(response.status).toBe(200);
             expect(response.headers['content-type']).toContain('json');
         })
-        test('should return array of books', async () => {
+        test('Should return array of books', async () => {
             expect(response.body).toBeInstanceOf(Array);
         })
     })
 
     // POST (create)
     describe('POST /books', () => {
-        test('should create a new book', async () => {
+        test('Should create a new book', async () => {
             const newBook = {
                 title: 'Test Book',
                 writer: 'Test Author',
@@ -39,7 +39,7 @@ describe('test book crud', () => {
 
     // GET one book by id
     describe('GET /books/:id', () => {
-        test('should return the new book by id', async () => {
+        test('Should return the new book by id', async () => {
             const response = await request(app).get(`/books/${createdBookId}`).send();
             expect(response.status).toBe(200);
             expect(response.body).toHaveProperty('id', createdBookId);
@@ -48,7 +48,7 @@ describe('test book crud', () => {
 
     // PUT (update) book by id
     describe('PUT /books/:id', () => {
-        test('should update the new book', async () => {
+        test('Should update the new book', async () => {
             const updatedData = { title: 'Updated Title' };
             const response = await request(app).put(`/books/${createdBookId}`).send(updatedData);
             expect(response.status).toBe(200);
@@ -59,7 +59,7 @@ describe('test book crud', () => {
     // DELETE book by id
 
     describe('DELETE /books/:id', () => {
-        test('should delete a book', async () => {
+        test('Should delete a book', async () => {
             const response = await request(app).delete(`/books/${createdBookId}`).send();
             expect(response.status).toBe(200);
             expect(response.body).toHaveProperty('message');

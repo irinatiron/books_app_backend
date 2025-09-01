@@ -15,7 +15,7 @@ const db_connection = new Sequelize(
 );
 
 db_connection.authenticate()
-  .then(() => console.log("✅ Conexión establecida con éxito."))
-  .catch(err => console.error("❌ Error al conectar con la base de datos:", err));
+  .then(() => console.log("✅ Connection established successfully."))
+  .catch(err => console.error("❌ Error connecting to the database:", err));
 
 export default db_connection;
