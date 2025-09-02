@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app, server } from '../app.js';
 import db_connection from '../database/db_connection.js';
-import BookModel from '../models/BookModel.js';
+import BookModel from '../models/bookModel.js';
 describe('test book crud', () => {
     let createdBookId;
     beforeAll(async () => {

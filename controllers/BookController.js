@@ -1,4 +1,4 @@
-import BookModel from "../models/BookModel.js"
+import BookModel from "../models/bookModel.js"
 export const getAllBooks = async(req, res)=> {
     try {
         const books = await BookModel.findAll()
