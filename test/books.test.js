@@ -63,6 +63,20 @@ describe('test book crud', () => {
     //     });
     // });
 
+    // POST (create)
+    describe('POST /books', () => {
+        const newBook = {
+            title: "Test",
+            writer: "Test",
+            book_description: "Test"
+        }
+        test('Should return a response with status 201 and type json', async () => {
+            const response = await request(app).post('/books').send(newBook)
+            expect(response.status).toBe(201)
+            expect(response.headers['content-type']).toContain('json')
+        });
+    });
+
     // DELETE book by id
     describe('DELETE /books/:id', () => {
         let response;
@@ -86,7 +100,7 @@ describe('test book crud', () => {
         });
     });
 
-    afterAll(async () => { 
+    afterAll(async () => {
         await db_connection.close()
         server.close()
     })
