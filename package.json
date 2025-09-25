@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.49.0",
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
     "mysql2": "^3.14.3",
     "sequelize": "^6.37.7"

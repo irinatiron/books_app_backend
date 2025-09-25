@@ -1,21 +1,14 @@
 import { DataTypes } from "sequelize";
 import db_connection from "../database/db_connection.js";
 
-const BookModel = db_connection.define('books', {
-    title: {
-        type: DataTypes.STRING,
+const UserModel = db_connection.define('users', {
+    id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El campo title campo no puede estar vacío.'
-            },
-            len: {
-                min: 2,
-                msg: 'El campo title no permite menos de 2 caracteres.'
-            }
-        }
+        autoIncrement: true,
+        primaryKey: true,
     },
-    writer: {
+    username: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -28,28 +21,37 @@ const BookModel = db_connection.define('books', {
             }
         }
     },
-    book_description: {
-        type: DataTypes.TEXT,
+    email: {
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notNull: {
                 msg: 'Este campo no puede estar vacío.'
             },
             min: {
-                args: 10,
-                msg: 'Este campo no permite menos de 10 caracteres.'
+                args: 5,
+                msg: 'Este campo no permite menos de 5 caracteres.'
             }
         }
     },
-    id_user: {
-        type: DataTypes.INTEGER,
+    password: {
+        type: DataTypes.STRING,
         allowNull: false,
-        references: {
-            model: 'users',
-            key: 'id'
+        validate: {
+            notNull: {
+                msg: 'Este campo no puede estar vacío.'
+            },
+            min: {
+                args: 5,
+                msg: 'Este campo no permite menos de 5 caracteres.'
+            }
         }
-    }
+    },
+    role: {
+        type: DataTypes.STRING,
+        defaultValue: 'user',
+    },
 }, {
     timestamps: false
 });
-export default BookModel
+export default UserModel
