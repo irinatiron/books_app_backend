@@ -56,6 +56,55 @@ describe('test book crud', () => {
         });
     });
 
+    // PUT (update) book by id
+    describe('PUT /books/:id', () => {
+        let testUser;
+        let createdBook;
+        let response;
+        const userData = {
+            username: "put-testuser",
+            email: "test@put.com",
+            password: "testpassword"
+        };
+        const bookData = {
+            title: "Put Book Test",
+            writer: "Put Book Test",
+            book_description: "Put Book Test"
+        };
+        const updatedBookData = {
+            title: "Updated Title",
+            writer: "Updated Writer",
+            book_description: "Updated Description"
+        };
+        beforeEach(async () => {
+            testUser = await UserModel.create(userData);
+            createdBook = await BookModel.create({ ...bookData, id_user: testUser.id });
+            response = await request(app)
+                .put(`/books/${createdBook.id}`)
+                .send(updatedBookData);
+        });
+        test('Should return a response with status 200 and type json', () => {
+            expect(response.status).toBe(200);
+            expect(response.headers['content-type']).toContain('json');
+        });
+        test('Should update the book data correctly', async () => {
+            const updatedBook = await BookModel.findOne({ where: { id: createdBook.id } });
+            expect(updatedBook.title).toBe(updatedBookData.title);
+            expect(updatedBook.writer).toBe(updatedBookData.writer);
+            expect(updatedBook.book_description).toBe(updatedBookData.book_description);
+        });
+        afterEach(async () => {
+            if (createdBook?.id) {
+                await BookModel.destroy({ where: { id: createdBook.id } });
+                createdBook = null;
+            }
+            if (testUser?.id) {
+                await UserModel.destroy({ where: { id: testUser.id } });
+                testUser = null;
+            }
+        });
+    });
+
     // DELETE book by id
     describe('DELETE /books/:id', () => {
         let response;
