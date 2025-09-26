@@ -2,10 +2,11 @@ import request from 'supertest';
 import { app, server } from '../app.js';
 import db_connection from '../database/db_connection.js';
 import BookModel from '../models/bookModel.js';
+import UserModel from '../models/userModel.js';
 
 describe('test book crud', () => {
     beforeAll(async () => {
-        await db_connection.authenticate()
+        await db_connection.authenticate();
     })
 
     // GET all books
@@ -25,34 +26,52 @@ describe('test book crud', () => {
 
     // POST (create)
     describe('POST /books', () => {
-        const newBook = {
-            title: "Test",
-            writer: "Test",
-            book_description: "Test"
+        let testUser;
+        let createdBook;
+        const userData = {
+            username: "post-testuser",
+            email: "test@post.com",
+            password: "testpassword"
+        }
+        const newBookData = {
+            title: "Create Book Test",
+            writer: "Create Book Test",
+            book_description: "Create Book Test"
         }
         test('Should return a response with status 201 and type json', async () => {
+            testUser = await UserModel.create(userData);
+            const newBook = { ...newBookData, id_user: testUser.id };
             const response = await request(app).post('/books').send(newBook)
             expect(response.status).toBe(201)
             expect(response.headers['content-type']).toContain('json')
+            createdBook = response.body;
         });
         afterAll(async () => {
-            await BookModel.destroy({
-                where:{
-                    title: "Test"
-                }
-            })
-        })
+            if (createdBook?.id) {
+                await BookModel.destroy({ where: { id: createdBook.id } });
+            }
+            if (testUser?.id) {
+                await UserModel.destroy({ where: { id: testUser.id } });
+            }
+        });
     });
 
     // DELETE book by id
     describe('DELETE /books/:id', () => {
         let response;
-        let createdBook = {};
+        let createdBook;
+        let testUser;
         beforeEach(async () => {
+            testUser = await UserModel.create({
+                username: "delete-testuser",
+                email: "test@delete.com",
+                password: "testpassword"
+            });
             createdBook = await BookModel.create({
                 title: "Book to be deleted",
-                writer: "Author",
-                book_description: "Description"
+                writer: "Delete Test Book Author",
+                book_description: "Delete Test Book Description",
+                id_user: testUser.id
             });
             response = await request(app).delete(`/books/${createdBook.id}`).send();
         });
@@ -65,7 +84,14 @@ describe('test book crud', () => {
             const foundBook = await BookModel.findOne({ where: { id: createdBook.id } });
             expect(foundBook).toBeNull();
         });
+        afterEach(async () => {
+            if (testUser?.id) {
+                await UserModel.destroy({ where: { id: testUser.id } });
+                testUser = null;
+            }
+        });
     });
+
     afterAll(async () => {
         await db_connection.close()
         server.close()
