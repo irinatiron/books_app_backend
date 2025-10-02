@@ -2,7 +2,7 @@ import request from 'supertest';
 import { app, server } from '../app.js';
 import db_connection from '../database/db_connection.js';
 import BookModel from '../models/bookModel.js';
-import UserModel from '../models/userModel.js';
+import UserModel from '../models/UserModel.js';
 
 describe('test book crud', () => {
     beforeAll(async () => {

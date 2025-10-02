@@ -7,11 +7,11 @@ const BookModel = db_connection.define('books', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: 'El campo title campo no puede estar vacío.'
+                msg: 'The title field cannot be empty.'
             },
             len: {
                 min: 2,
-                msg: 'El campo title no permite menos de 2 caracteres.'
+                msg: 'The title field does not allow less than 2 characters.'
             }
         }
     },
@@ -20,11 +20,11 @@ const BookModel = db_connection.define('books', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: 'Este campo no puede estar vacío.'
+                msg: 'This field cannot be empty.'
             },
             len: {
                 min: 2,
-                msg: 'Este campo no permite menos de 2 caracteres.'
+                msg: 'This field does not allow less than 2 characters.'
             }
         }
     },
@@ -33,11 +33,11 @@ const BookModel = db_connection.define('books', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: 'Este campo no puede estar vacío.'
+                msg: 'This field cannot be empty.'
             },
             min: {
                 args: 10,
-                msg: 'Este campo no permite menos de 10 caracteres.'
+                msg: 'This field does not allow less than 10 characters.'
             }
         }
     },
@@ -52,4 +52,4 @@ const BookModel = db_connection.define('books', {
 }, {
     timestamps: false
 });
-export default BookModel
+export default BookModel;

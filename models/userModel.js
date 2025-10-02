@@ -13,11 +13,11 @@ const UserModel = db_connection.define('users', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: 'Este campo no puede estar vacío.'
+                msg: 'This field cannot be empty.'
             },
             len: {
                 min: 2,
-                msg: 'Este campo no permite menos de 2 caracteres.'
+                msg: 'This field does not allow less than 2 characters.'
             }
         }
     },
@@ -26,11 +26,11 @@ const UserModel = db_connection.define('users', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: 'Este campo no puede estar vacío.'
+                msg: 'This field cannot be empty.'
             },
             min: {
                 args: 5,
-                msg: 'Este campo no permite menos de 5 caracteres.'
+                msg: 'This field does not allow less than 5 characters.'
             }
         }
     },
@@ -39,11 +39,11 @@ const UserModel = db_connection.define('users', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: 'Este campo no puede estar vacío.'
+                msg: 'This field cannot be empty.'
             },
             min: {
                 args: 5,
-                msg: 'Este campo no permite menos de 5 caracteres.'
+                msg: 'This field does not allow less than 5 characters.'
             }
         }
     },
@@ -54,4 +54,4 @@ const UserModel = db_connection.define('users', {
 }, {
     timestamps: false
 });
-export default UserModel
+export default UserModel;
