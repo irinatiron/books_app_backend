@@ -12,7 +12,9 @@ export const getAllBooks = async(req, res)=> {
     
 export const createBook = async (req, res) => {
   try {
-    const newBook = await BookModel.create(req.body)
+    const id_user = req.user.id
+    const bookData = {...req.body, id_user: id_user}
+    const newBook = await BookModel.create(bookData)
     res.status(201).json(newBook)
   } catch (error) {
     res.status(500).json({ message: error.message })
